@@ -2,17 +2,13 @@ FROM node:24-bookworm
 
 WORKDIR /app
 
+ENV NODE_ENV=development
+
 RUN corepack enable
-
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY patches ./patches
-COPY ui/package.json ./ui/package.json
-COPY extensions/memory-core/package.json ./extensions/memory-core/package.json
-
-RUN pnpm install --frozen-lockfile
 
 COPY . .
 
+RUN pnpm install --frozen-lockfile
 RUN pnpm build
 RUN pnpm ui:build
 
